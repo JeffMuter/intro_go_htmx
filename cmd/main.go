@@ -33,6 +33,8 @@ func main() {
 
 	e.GET("/", func(c echo.Context) error {
 		count.Count++
-		return c.Render(200, "index.html", count)
+		return c.Render(200, "index", count)
 	})
+
+	e.Logger.Fatal(e.Start(":8080"))
 }
