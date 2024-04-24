@@ -3,16 +3,35 @@
 <html lang="en">
 
 <head>
-    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12"
+        integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+        crossorigin="anonymous"></script>
     <title></title>
-    <meta charset="UTF-8"
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-    Count {{ .Count }}
-<button hx-post="/count">Count</button>
+    {{ template "form" . }}
+    {{ template "display" . }}
 </body>
-
 </html>
+{{ end }}
+
+{{ block "form" . }}
+<form hx-post="/contacts">
+name: <input type="text" name="name" />
+email: <input type="text" name="email" />
+<button type="submit"></button>
+</form>
+{{ end }}
+
+{{ block "display" . }}
+<div style="display: flex; flex-direction: column;">
+    {{ range .Contacts }}
+    <div>
+        Name: <span>name: {{ .Name }}</span>
+        Email: <span>email: {{ .Email }}</span>
+    </div>
+    {{ end }}
+</div>
 {{ end }}
