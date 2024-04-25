@@ -70,5 +70,5 @@ func main() {
 		return c.Render(200, "index", data)
 	})
 
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":6969"))
 }
