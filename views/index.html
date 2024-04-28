@@ -13,6 +13,21 @@
 <body>
     {{ template "form" .Form }}
     {{ template "display" .Data }}
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            document.body.addEventListener('htmx:beforeSwap', function (evt) {
+                if (evt.detail.xhr.status === 422) {
+                    // allow 422 responses to swap as we are using this as a signal that
+                    // a form was submitted with bad data and want to rerender with the
+                    // errors
+                    //
+                    // set isError to false to avoid error logging in console
+                    evt.detail.shouldSwap = true;
+                    evt.detail.isError = false;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
@@ -35,10 +50,18 @@
 {{ block "display" . }}
 <div id="contacts" style="display: flex; flex-direction: column;">
     {{ range .Contacts }}
-    <div>
-        Name: <span>name: {{ .Name }}</span>
-        Email: <span>email: {{ .Email }}</span>
-    </div>
+    {{ template "contacts" . }}
     {{ end }}
+</div>
+{{ end }}
+{{ block "contact" . }}
+<div>
+    Name: <span>{{ .Name }}</span>
+    Email: <span>{{ .Email }}</span>
+</div>
+{{ end }}
+{{ block "oob-contact" . }}
+<div hx-swap-o>
+    {{ template "contact" . }}
 </div>
 {{ end }}

@@ -106,11 +106,11 @@ func main() {
 			formData.Values["name"] = name
 			formData.Values["email"] = email
 			formData.Errors["email"] = "Email already exists."
-			return c.Render(400, "form", formData)
+			return c.Render(422, "form", formData)
 		}
 
 		page.Data.Contacts = append(page.Data.Contacts, newContact(name, email))
-		return c.Render(200, "display", page)
+		return c.Render(200, "display", page.Data)
 	})
 
 	e.Logger.Fatal(e.Start(":6969"))
