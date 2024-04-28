@@ -108,9 +108,11 @@ func main() {
 			formData.Errors["email"] = "Email already exists."
 			return c.Render(422, "form", formData)
 		}
+		contact := newContact(name, email)
+		page.Data.Contacts = append(page.Data.Contacts, contact)
 
-		page.Data.Contacts = append(page.Data.Contacts, newContact(name, email))
-		return c.Render(200, "display", page.Data)
+		c.Render(200, "form", newFormData())
+		return c.Render(200, "oob-contact", contact)
 	})
 
 	e.Logger.Fatal(e.Start(":6969"))
