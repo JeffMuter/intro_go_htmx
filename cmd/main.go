@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"strconv"
 	"text/template"
 
 	"github.com/labstack/echo/v4"
@@ -42,6 +43,15 @@ type Contacts = []Contact
 
 type Data struct {
 	Contacts Contacts
+}
+
+func (d *Data) indexOf(id int) int {
+	for i, contact := range d.Contacts {
+		if contact.Id == id {
+			return i
+		}
+	}
+	return -1
 }
 
 func (d *Data) hasEmail(email string) bool {
@@ -120,5 +130,19 @@ func main() {
 		return c.Render(200, "oob-contact", contact)
 	})
 
+	e.DELETE("/contacts/:id", func(c echo.Context) error {
+		idStr := c.Param("id")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			return c.String(400, "invalid id")
+		}
+		index := page.Data.indexOf(id)
+		if index == -1 {
+			return c.String(404, "contact not found")
+		}
+
+		page.Data.Contacts = append(page.Data.Contacts[:index], page.Data.Contacts[index+1:]...)
+		return c.NoContent(200)
+	})
 	e.Logger.Fatal(e.Start(":6969"))
 }
