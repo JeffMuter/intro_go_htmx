@@ -21,15 +21,20 @@ func newTemplate() *Templates {
 	return &Templates{templates: template.Must(template.ParseGlob("views/*.html"))}
 }
 
+var id = 0
+
 type Contact struct {
 	Name  string
 	Email string
+	Id    int
 }
 
 func newContact(name string, email string) Contact {
+	id++
 	return Contact{
 		Name:  name,
 		Email: email,
+		Id:    id,
 	}
 }
 
