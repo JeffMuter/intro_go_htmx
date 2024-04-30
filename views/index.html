@@ -8,6 +8,7 @@
         crossorigin="anonymous"></script>
     <title></title>
     <meta charset="UTF-8" <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/index.css" />
 </head>
 
 <body>
@@ -57,7 +58,8 @@
 
 {{ block "contact" . }}
 <div id="contact-{{ .Id }}" hx-swap="outerHTML" style="display: flex; justify-content: left; align-items: center;">
-    <div hx-delete="/contacts/{{ .Id }}" hx-target="#contact-{{ .Id }}" style="width: 1rem; cursor: pointer; margin: 2rem;">
+    <div hx-indicator="#ci-{{ .Id }}" hx-delete="/contacts/{{ .Id }}" hx-target="#contact-{{ .Id }}"
+        style="width: 1rem; cursor: pointer; margin: 2rem;">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24px" height="24px">
             <path
                 d="M5 21h14a2 2 0 0 0 2-2V7H3v12A2 2 0 0 0 5 21zm2-10h2v8H7v-8zm4 0h2v8h-2v-8zm4 0h2v8h-2v-8zM18.5 4l-1-1h-11l-1 1H5v2h14V4h-0.5z" />
@@ -65,6 +67,9 @@
     </div>
     Name: <span>{{ .Name }}</span>
     Email: <span>{{ .Email }}</span>
+    <div id="ci-{{ .Id }}" class="htmx-indicator">
+        <img src="/images/bars.svg" alt="loading" style="width: 1rem;" />
+    </div>
 </div>
 {{ end }}
 

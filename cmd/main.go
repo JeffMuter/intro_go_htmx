@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"io"
 	"strconv"
 	"text/template"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -101,12 +101,14 @@ func newPage() Page {
 }
 
 func main() {
-	fmt.Println("hi")
 	e := echo.New()
 	e.Use(middleware.Logger())
 
 	page := newPage()
 	e.Renderer = newTemplate()
+
+	e.Static("/images", "images")
+	e.Static("/css", "css")
 
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(200, "index", page)
@@ -131,6 +133,7 @@ func main() {
 	})
 
 	e.DELETE("/contacts/:id", func(c echo.Context) error {
+		time.Sleep(1000 * time.Millisecond)
 		idStr := c.Param("id")
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
